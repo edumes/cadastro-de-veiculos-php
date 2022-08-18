@@ -17,4 +17,5 @@ Banco de Dados MySQL phpMyAdmin
 
 Cada tabela possui seu id para sua respectiva descrição
 
-![image](https://user-images.githubusercontent.com/66120423/185478901-db1ae276-cce1-4e7e-ab62-4f482b2e0b5a.png ![image](https://user-images.githubusercontent.com/66120423/185479090-887b2da7-d470-4df3-bc6c-b0e44be8cbc0.png)) 
+![image](https://user-images.githubusercontent.com/66120423/185478901-db1ae276-cce1-4e7e-ab62-4f482b2e0b5a.png) 
+![image](https://user-images.githubusercontent.com/66120423/185479177-7ddb3e39-0aba-41ac-873a-572c72625b95.png)
