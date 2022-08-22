@@ -18,6 +18,29 @@ include('./script/conexao.php');
     <link rel="stylesheet" href="styles/reset.min.css" />
     <link rel="stylesheet" href="styles/style.css" />
   </head>
+
+<script type="text/javascript">   
+
+    function excluir_veiculo() {
+
+        if(!confirm('Deseja realmente excluir este veiculo?')
+
+    ){
+
+        if(window.event)
+
+            window.event.returnValue=false;
+
+        else
+            
+            e.preventDefault();
+            
+     }
+
+    }
+
+</script>
+
   <style>
     input[type="text"], [type="number"], [type="select"] {
       font-weight: 900;
@@ -29,26 +52,45 @@ include('./script/conexao.php');
       font-size: large;
     }
     .container {
-      height: 450px;
+      height: 500px;
+      width: 580px;
+    }
+
+    select{
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .custom-select{
+      margin-left: 30%;
     }
 
     .content{
-      font-size: 30px;
-      padding-left: 25%;
+      font-size: 28px;
+      padding-left: 0%;
+      padding-left: 0%;
       padding-bottom: 10%;
       margin-left: 15 0px;
       justify-content: center;
-      color: whitesmoke;
+      color: white;
+    }
+
+    table{
+      border: 4px solid #32B0EB;
+      text-align: center;
+      box-shadow: 5px 5px 30px 12px #000000;
     }
 
     th{
       text-indent: 15px;
+      border: 2px solid #32B0EB;
       text-align: left;
-      justify-content: left;
+      justify-content: left;  
     }
 
     td{
       text-indent: 15px;
+      border: 2px solid #32B0EB;
       text-align: left;
     }
 
@@ -61,8 +103,29 @@ include('./script/conexao.php');
       padding-right: 10px;
       font-size: 25px;
       font-weight: 700;
-      margin-left: 15%;
-      background-color: #2683ca;
+      margin-left: 4%;
+      background-color: #32B0EB;
+    }
+
+    .cadastros{
+      margin-left: 30%;
+      margin-right: 30%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    button{
+      background-color: #32B0EB;
+      color: white;
+      cursor: pointer;
+      font-size: 25px;
+      border-radius: 10px;
+      margin: 3px 3px 3px;
+    }
+
+    button:hover{
+      background-color: #266f91;
+      margin: 10px 10px 10px;
     }
 
   </style>
@@ -79,7 +142,7 @@ include('./script/conexao.php');
               Menu
             </button>
             <ul class="nav__wrapper">
-              <li class="nav__item active">
+              <li class="nav__item disabled">
                 <a href="cadastrar_veiculos.php">
                   <svg
                     viewBox="0 0 24 24"
@@ -98,6 +161,7 @@ include('./script/conexao.php');
                 </a>
               </li>
               <li class="nav__item">
+              <li class="nav__item active">
                 <a href="consultar_veiculos.php">
                   <svg
                     viewBox="0 0 24 24"
@@ -142,7 +206,8 @@ include('./script/conexao.php');
     </header>
     <!-- Header End -->
     <div class="container">
-      <h1>Consultar Veículos</h1>
+      <h1>Consultar Veículos <img src="assets/atualizar.png" style="float: right; cursor: pointer;" onclick="window.location.reload()"></h1>
+      <br>
       <div class="content">
         <div class="table">
 
@@ -152,7 +217,9 @@ include('./script/conexao.php');
         echo "<tr width='50%'>";
         echo "<th width='50%'>ID</th>";
         echo "<th width='50%'>Chassi</th>";
-        echo "<th width='50%'>Cor</th>";
+        echo "<th width='50%'>Placa</th>";
+        echo "<th width='50%'>AnoMod.</th>";
+        echo "<th></th>";
         echo "</tr>";
         
         $sql = "SELECT * FROM veiculos";
@@ -161,20 +228,33 @@ include('./script/conexao.php');
         while ($registro = mysqli_fetch_array($resultado)){
           $id = $registro['id'];
           $chassi = $registro['chassi'];
-          $cor = $registro['cor'];
+          $placa = $registro['placa'];
+          $ano_mod = $registro['ano_mod'];
           echo "<tr>";
           echo "<td>".$id."</td>";
           echo "<td>".$chassi."</td>";
-          echo "<td>".$cor."</td>";
+          echo "<td>".$placa."</td>";
+          echo "<td>".$ano_mod."</td>";
+          echo "<td><a href='editar_veiculos.php?id=$registro[id]'><img src='assets/editar.png' style='float: left; cursor: pointer;'> <a href='editar_veiculos.php?id=$registro[id]'></a></td>";
+          echo "<td><a href='deletar_veiculos.php?id=$registro[id]' onclick='excluir_veiculo()'><img src='assets/excluir.png' style='float: left; cursor: pointer;'></td>";
           echo "</tr>";
         }
         echo "</table>";
       ?>
 
+      <br>
+
+      <div class="cadastros">
+        <h2>Cadastros <img src="./assets//novo.png"></h2>
+          <a href="./cadastros/cadastrar_cor.php"><button>Cor</button></a>
+          <a href="./cadastros/cadastrar_modelo.php"><button>Modelo</button></a>
+          <a href="./cadastros/cadastrar_marca.php"><button>Marca</button></a>
+          <a href="./cadastros/cadastrar_proprietario.php"><button>Proprietário</button></a><br>
+          <a href="./cadastros/cadastrar_local_emplac.php"><button>Local Emplac.</button></a><br>
+      </div>
+
         </div>
       </div>
-      <br><br><br>
-      <button class="btn">Listar todos os dados / Editar</button>
     </div>
     <script src="script/header.js"></script>
   </body>

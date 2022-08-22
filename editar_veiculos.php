@@ -3,20 +3,37 @@
 include('./script/protect.php');
 include('./script/conexao.php');
 
+$select_id = "SELECT * FROM veiculos WHERE id = $_GET[id]";
+$msqli = mysqli_query($conn, $select_id);
+
+$row_veiculos = mysqli_fetch_assoc($msqli);
+
+
 $sqlCor = "SELECT * FROM cor";
 $cores = $mysqli->query($sqlCor) or die("Falha no SQL: " . $mysqli->error);
+$msqliCor = mysqli_query($conn, $sqlCor);
+$row_cores = mysqli_fetch_assoc($msqliCor);
 
 $sqlModelo = "SELECT * FROM modelo";
 $modelos = $mysqli->query($sqlModelo) or die("Falha no SQL: " . $mysqli->error);
+$msqliModelo = mysqli_query($conn, $sqlModelo);
+$row_modelos = mysqli_fetch_assoc($msqliModelo);
 
 $sqlMarca = "SELECT * FROM marca";
 $marcas = $mysqli->query($sqlMarca) or die("Falha no SQL: " . $mysqli->error);
+$msqliMarca = mysqli_query($conn, $sqlMarca);
+$row_marcas = mysqli_fetch_assoc($msqliMarca);
 
 $sqlProprietario = "SELECT * FROM proprietario";
 $proprietarios = $mysqli->query($sqlProprietario) or die("Falha no SQL: " . $mysqli->error);
+$msqliProprietario = mysqli_query($conn, $sqlProprietario);
+$row_proprietarios = mysqli_fetch_assoc($msqliProprietario);
 
 $sqlLocal_emplac = "SELECT * FROM local_emplac";
 $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mysqli->error);
+$msqliLocal_emplac = mysqli_query($conn, $sqlLocal_emplac);
+$row_local_emplacs = mysqli_fetch_assoc($msqliLocal_emplac);
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +45,7 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@200&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <title>.:: Cadastro de Veículos ::.</title>
+    <title>.:: Editar Veículo ::.</title>
     <link rel="stylesheet" href="styles/reset.min.css" />
     <link rel="stylesheet" href="styles/style.css" />
   </head>
@@ -54,11 +71,7 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
 
     input[type=submit] {
       font-size: 22px;
-    }
-
-    .select_cadastros{
-      size: 10px;
-    }
+  }
   </style>
   <body>
     <!-- Header Start -->
@@ -88,10 +101,9 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
                   >
                   <path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 6h10.29l1.04 3H5.81l1.04-3zM19 16H5v-4.66l.12-.34h13.77l.11.34V16z"/><circle cx="7.5" cy="13.5" r="1.5"/><circle cx="16.5" cy="13.5" r="1.5"/>
                   </svg>
-                  <span>Cadastrar Veículo</span>
+                  <span>Editar Veículo</span>
                 </a>
               </li>
-
               <li class="nav__item">
                 <a href="consultar_veiculos.php">
                   <svg
@@ -110,7 +122,6 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
                   <span>Consultar Veículo</span>
                 </a>
               </li>
-
               <li class="nav__item">
                 <a href="login.php">
                   <svg
@@ -137,22 +148,24 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
     <!-- Header End -->
     <div class="container">
       <div class="form-container">
-        <h1>Cadastrar Veículo</h1>
-        <form action="script/form.php" method="post">
+        <h1>Editar Veículo</h1>
+        <form action="script/form_edit.php" method="post">
+
+          <input type="hidden" name="id" value="<?php echo $row_veiculos['id']; ?>">
 
           <label for="chassi">Chassi:</label>
-          <input type="text" name="chassi" id="input" placeholder="9999999999999999" maxlength="16" required>
+          <input type="text" name="chassi" id="input" placeholder="9999999999999999" maxlength="16" required value="<?php echo $row_veiculos['chassi']; ?>">
 
           <br><br>
 
-          
-          <label for="cor">Cor:</label> 
+          <label for="cor">Cor:</label>
           <select name="cor" id="selection">
           <?php if ($cores) :?>
                   <?php foreach ($cores as $cor) : ?>
-                      <option value="<?php echo $cor['idCor']; ?>">
-                        <?php echo $cor['descricao']; ?>
-                      </option>
+                  <?php if($cor['idCor'] == $row_veiculos['cor']){ ?>
+                    <option selected value='<?php echo $cor['idCor']; ?>'><?php echo $cor['descricao']; ?></option>
+                <?php }else{?>
+                      <option value="<?php echo $cor['idCor']; ?>"><?php echo $cor['descricao']; ?></option> <?php } ?>
                   <?php endforeach; ?>
               <?php endif; ?>
           </select>
@@ -163,9 +176,10 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
           <select name="modelo" id="selection">
           <?php if ($modelos) :?>
                   <?php foreach ($modelos as $modelo) : ?>
-                      <option value="<?php echo $modelo['idModelo']; ?>">
-                        <?php echo $modelo['descricao']; ?>
-                      </option>
+                    <?php if($modelo['idModelo'] == $row_veiculos['modelo']){ ?>
+                    <option selected value='<?php echo $modelo['idModelo']; ?>'><?php echo $modelo['descricao']; ?></option>
+                <?php }else{?>
+                      <option value="<?php echo $modelo['idModelo']; ?>"><?php echo $modelo['descricao']; ?></option> <?php } ?>
                   <?php endforeach; ?>
               <?php endif; ?>
           </select>
@@ -176,9 +190,10 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
           <select name="marca" id="selection">
           <?php if ($marcas) :?>
                   <?php foreach ($marcas as $marca) : ?>
-                      <option value="<?php echo $marca['idMarca']; ?>">
-                        <?php echo $marca['descricao']; ?>
-                      </option>
+                    <?php if($marca['idMarca'] == $row_veiculos['marca']){ ?>
+                    <option selected value='<?php echo $marca['idMarca']; ?>'><?php echo $marca['descricao']; ?></option>
+                <?php }else{?>
+                      <option value="<?php echo $marca['idMarca']; ?>"><?php echo $marca['descricao']; ?></option> <?php } ?>
                   <?php endforeach; ?>
               <?php endif; ?>
           </select>
@@ -189,9 +204,10 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
           <select name="proprietario" id="selection">
           <?php if ($proprietarios) :?>
                   <?php foreach ($proprietarios as $proprietario) : ?>
-                      <option value="<?php echo $proprietario['idProp']; ?>">
-                        <?php echo $proprietario['descricao']; ?>
-                      </option>
+                    <?php if($proprietario['idProp'] == $row_veiculos['proprietario']){ ?>
+                    <option selected value='<?php echo $proprietario['idProp']; ?>'><?php echo $proprietario['descricao']; ?></option>
+                <?php }else{?>
+                      <option value="<?php echo $proprietario['idProp']; ?>"><?php echo $proprietario['descricao']; ?></option> <?php } ?>
                   <?php endforeach; ?>
               <?php endif; ?>
           </select>
@@ -202,9 +218,10 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
           <select name="local_emplac" id="selection">
           <?php if ($local_emplacs) :?>
                   <?php foreach ($local_emplacs as $local_emplac) : ?>
-                      <option value="<?php echo $local_emplac['idLocal_emplac']; ?>">
-                        <?php echo $local_emplac['descricao']; ?>
-                      </option>
+                    <?php if($local_emplac['idLocal_emplac'] == $row_veiculos['local_emplac']){ ?>
+                    <option selected value='<?php echo $local_emplac['idLocal_emplac']; ?>'><?php echo $local_emplac['descricao']; ?></option>
+                <?php }else{?>
+                      <option value="<?php echo $local_emplac['idLocal_emplac']; ?>"><?php echo $local_emplac['descricao']; ?></option> <?php } ?>
                   <?php endforeach; ?>
               <?php endif; ?>
           </select>
@@ -212,29 +229,30 @@ $local_emplacs = $mysqli->query($sqlLocal_emplac) or die("Falha no SQL: " . $mys
           <br><br>
 
           <label for="placa">Placa:</label>
-          <input type="text" name="placa" id="input" placeholder="" maxlength="7" required>
+          <input type="text" name="placa" id="input" placeholder="" maxlength="7" 
+          value="<?php echo $row_veiculos['placa']; ?>" required>
 
           <br><br>
 
           <label for="ano_fab_mod">Ano Fabricado:</label>
-          <input type="number" name="ano_fab" id="input" placeholder="2015" maxlength="4" min="1900" max="2099" step="1" value="2015" required>
+          <input type="number" name="ano_fab" id="input" placeholder="2015" maxlength="4" min="1900" max="2099" step="1" value="<?php echo $row_veiculos['ano_fab']; ?>" required>
 
           <br><br>
 
           <label for="ano_fab_mod">Ano Modificado:</label>
-          <input type="number" name="ano_mod" id="input" placeholder="2022" maxlength="4" min="1900" max="2099" step="1" value="2016" required>
+          <input type="number" name="ano_mod" id="input" placeholder="2022" maxlength="4" min="1900" max="2099" step="1" value="<?php echo $row_veiculos['ano_mod']; ?>" required>
 
           <label for="renavam">Renavam:</label>
-          <input type="number" name="renavam" id="input" placeholder="00000000000" maxlength="11" required>
+          <input type="number" name="renavam" id="input" placeholder="00000000000" maxlength="11" required value="<?php echo $row_veiculos['renavam']; ?>">
 
           <br><br>
 
           <label for="motor">Motor:</label>
-          <input type="number" name="motor" id="input" placeholder="V11" maxlength="15" required>
+          <input type="number" name="motor" id="input" placeholder="V11" maxlength="15" required value="<?php echo $row_veiculos['motor']; ?>">
           
           <br><br>
 
-          <a href="./consultar_veiculos.php"> <input type="submit" value="Cadastrar"> </a>
+           <input type="submit" value="Confirmar">
 
           <br><br>
 
