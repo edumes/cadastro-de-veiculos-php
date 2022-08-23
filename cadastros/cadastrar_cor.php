@@ -60,6 +60,26 @@ include('../script/conexao.php');
               Menu
             </button>
             <ul class="nav__wrapper">
+
+            <li class="nav__item disabled">
+                <a href="../consultar_veiculos.php">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    height="24px"
+                    x="0"
+                    y="0"
+                    preserveAspectRatio="xMinYMin meet"
+                    class="nav-icon"
+                    focusable="false"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                  <path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7h-2z"/>
+                  </svg>
+                  <span>Voltar</span>
+                </a>
+              </li>
+
               <li class="nav__item active">
                 <a href="cadastrar_veiculos.php">
                   <svg
