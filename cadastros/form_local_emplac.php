@@ -8,7 +8,7 @@ $cadastra_local_emplac = "INSERT INTO local_emplac (descricao) VALUES ('$local_e
 
 $resultado_cadastro = mysqli_query($conn, $cadastra_local_emplac);
 
-//header("Location: ./consultar_veiculos.php");
+header("Location: ../consultar_veiculos.php");
 
 //if(mysqli_insert_id($mysqli)){
    //header("Location: consultar_veiculos.php");

@@ -8,7 +8,7 @@ $cadastra_proprietario = "INSERT INTO proprietario (descricao) VALUES ('$proprie
 
 $resultado_cadastro = mysqli_query($conn, $cadastra_proprietario);
 
-//header("Location: ./consultar_veiculos.php");
+header("Location: ../consultar_veiculos.php");
 
 //if(mysqli_insert_id($mysqli)){
    //header("Location: consultar_veiculos.php");

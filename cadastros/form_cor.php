@@ -8,7 +8,7 @@ $cadastra_cor = "INSERT INTO cor (descricao) VALUES ('$cor')";
 
 $resultado_cadastro = mysqli_query($conn, $cadastra_cor);
 
-//header("Location: ./consultar_veiculos.php");
+header("Location: ../consultar_veiculos.php");
 
 //if(mysqli_insert_id($mysqli)){
    //header("Location: consultar_veiculos.php");

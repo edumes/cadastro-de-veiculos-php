@@ -134,7 +134,7 @@ include('../script/conexao.php');
 
           <br><br>
 
-          <a href="./consultar_veiculos.php"> <input type="submit" value="Cadastrar"> </a>
+          <a href="../consultar_veiculos.php"> <input type="submit" value="Cadastrar"> </a>
 
         </form>
       </div>

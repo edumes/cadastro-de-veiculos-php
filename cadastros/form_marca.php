@@ -8,7 +8,7 @@ $cadastra_marca = "INSERT INTO marca (descricao) VALUES ('$marca')";
 
 $resultado_cadastro = mysqli_query($conn, $cadastra_marca);
 
-//header("Location: ./consultar_veiculos.php");
+header("Location: ../consultar_veiculos.php");
 
 //if(mysqli_insert_id($mysqli)){
    //header("Location: consultar_veiculos.php");
